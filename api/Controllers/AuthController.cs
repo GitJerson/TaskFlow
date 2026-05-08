@@ -7,6 +7,7 @@ namespace Controllers
     using Microsoft.AspNetCore.Mvc;
     using DTOs;
     using Services;
+    using Microsoft.AspNetCore.Authorization;
 
     [Route("api/[controller]")]
     [ApiController]

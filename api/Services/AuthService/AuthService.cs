@@ -10,11 +10,13 @@ namespace Services
     public class AuthService : IAuthService
     {
         private readonly IAuthRepository _authRepository;
-        public AuthService(IAuthRepository authRepository)
+        private readonly IJwtService _jwtService;
+        public AuthService(IAuthRepository authRepository, IJwtService jwtService)
         {
             _authRepository = authRepository;
+            _jwtService = jwtService;
         }
-        public async Task<User?> LoginAsync(LoginRequest request)
+        public async Task<string> LoginAsync(LoginRequest request)
         {
             var user = await _authRepository.FindUser(request.Email);
 
@@ -22,10 +24,10 @@ namespace Services
             {
                 var isMatch = BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash);
                 if(isMatch)
-                    return user;
+                    return _jwtService.GenerateJwtToken(user);
             }
 
-            return null;
+            return null!;
         }
 
         public async Task<string> RegisterAsync(RegisterRequest request)
