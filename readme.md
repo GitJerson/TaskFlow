@@ -15,11 +15,11 @@ This is an ongoing build. Some features are already working, others are still be
 - User model and initial database migration
 - Auth endpoints — `POST /api/auth/register` and `POST /api/auth/login`
 - Service and Repository pattern wired up with proper DI
-
-### 🚧 In Progress
 - Password hashing with BCrypt
 - Real registration and login logic hitting the database
 - JWT token generation on login
+
+### 🚧 In Progress
 - OAuth 2.0 — Google and GitHub login
 - API Key authentication
 - Projects CRUD
@@ -50,7 +50,7 @@ This is an ongoing build. Some features are already working, others are still be
 | Logging | Serilog *(planned)* |
 | Validation | FluentValidation |
 | Object Mapping | AutoMapper |
-| Password Hashing | BCrypt.Net *(in progress)* |
+| Password Hashing | BCrypt.Net *(done)* |
 | Containerization | Docker *(planned)* |
 | CI/CD | GitHub Actions *(planned)* |
 
@@ -125,7 +125,12 @@ dotnet user-secrets init
 dotnet user-secrets set "ConnectionStrings:DefaultConnection" "Host=localhost;Port=5432;Database=yourdb;Username=yourusername;Password=yourpassword"
 ```
 
-More secrets will be added here as features like JWT and OAuth get implemented.
+**3. Set your JWT user secret**
+```bash
+dotnet user-secrets set "Jwt:Secret" "your-secret-key"
+```
+
+More secrets will be added here as features like OAuth get implemented.
 
 ---
 
