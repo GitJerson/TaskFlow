@@ -1,11 +1,19 @@
 using Data;
 using Microsoft.EntityFrameworkCore;
+using Repositories;
 using Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 //1. Build Services
+
+//Repositories
+builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+
+//Custom services
 builder.Services.AddScoped<IAuthService, AuthService>();
+
+//-------------------//
 builder.Services.AddOpenApi();
 builder.Services.AddControllers();
 builder.Services.AddDbContext<AppDbContext>(options =>

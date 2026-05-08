@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "MEM6aKbGQ3w=",
+  "dgSpecHash": "L0NRoy7x1tc=",
   "success": true,
   "projectFilePath": "C:\\Users\\Jerson\\onedrive\\desktop\\TaskFlow\\api\\api.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Jerson\\.nuget\\packages\\bcrypt.net-next\\4.1.0\\bcrypt.net-next.4.1.0.nupkg.sha512",
     "C:\\Users\\Jerson\\.nuget\\packages\\fluentvalidation\\12.1.1\\fluentvalidation.12.1.1.nupkg.sha512",
     "C:\\Users\\Jerson\\.nuget\\packages\\fluentvalidation.dependencyinjectionextensions\\12.1.1\\fluentvalidation.dependencyinjectionextensions.12.1.1.nupkg.sha512",
     "C:\\Users\\Jerson\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
