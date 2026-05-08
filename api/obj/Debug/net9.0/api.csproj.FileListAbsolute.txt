@@ -131,3 +131,5 @@ C:\Users\Jerson\onedrive\desktop\TaskFlow\api\obj\Debug\net9.0\refint\api.dll
 C:\Users\Jerson\onedrive\desktop\TaskFlow\api\obj\Debug\net9.0\api.pdb
 C:\Users\Jerson\onedrive\desktop\TaskFlow\api\obj\Debug\net9.0\api.genruntimeconfig.cache
 C:\Users\Jerson\onedrive\desktop\TaskFlow\api\obj\Debug\net9.0\ref\api.dll
+C:\Users\Jerson\onedrive\desktop\TaskFlow\api\bin\Debug\net9.0\BCrypt.Net-Next.dll
+C:\Users\Jerson\onedrive\desktop\TaskFlow\api\obj\Debug\net9.0\api.sourcelink.json

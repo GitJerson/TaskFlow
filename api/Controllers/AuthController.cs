@@ -20,17 +20,27 @@ namespace Controllers
         }
 
         [HttpPost("login")]
-        public IActionResult Login([FromBody] LoginRequest request)
+        public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
-            // Implement login logic here
-            return Ok(new {Message = _authService.Login(request)});
+            //Calls login service
+            var user = await _authService.LoginAsync(request);
+
+            if(user == null)
+                return Unauthorized();
+
+            return Ok(user);
         }
 
         [HttpPost("register")]
-        public IActionResult Register([FromBody] RegisterRequest request)
+        public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
-            // Implement registration logic here
-            return Ok(new { Message = _authService.Register(request)});
+            // Calls register service
+            var message = await _authService.RegisterAsync(request);
+
+            if(message == "Email already exists")
+                return Conflict();
+
+            return Ok(message);
         }
     }
 

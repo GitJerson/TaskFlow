@@ -5,10 +5,10 @@ namespace Services
     using System.Linq;
     using System.Threading.Tasks;
     using DTOs;
-
+    using Models;
     public interface IAuthService
     {
-        string Register(RegisterRequest request);
-        string Login(LoginRequest request);
+        Task<string> RegisterAsync(RegisterRequest request);
+        Task<User?>  LoginAsync(LoginRequest request);
     }
 }
