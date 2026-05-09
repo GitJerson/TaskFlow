@@ -9,13 +9,18 @@ namespace Services
     using Models;
     public class AuthService : IAuthService
     {
+        //Repository
         private readonly IAuthRepository _authRepository;
         private readonly IJwtService _jwtService;
+
+        //Consturctor & Dependency Injection
         public AuthService(IAuthRepository authRepository, IJwtService jwtService)
         {
             _authRepository = authRepository;
             _jwtService = jwtService;
         }
+
+        //Methods
         public async Task<string> LoginAsync(LoginRequest request)
         {
             var user = await _authRepository.FindUser(request.Email);
@@ -51,7 +56,7 @@ namespace Services
 
             };
 
-            await _authRepository.SaveUser(user);
+            await _authRepository.AddUser(user);
 
             return "User created successfully";
         }

@@ -1,6 +1,6 @@
-# TaskFlow API
+# TaskFlow
 
-A task management REST API built with ASP.NET Core Web API (.NET 9). TaskFlow lets teams organize work through projects, tasks, and assignments. Moreover, users can create projects, break them into tasks, assign teammates, set deadlines, and track progress through a straightforward REST API.
+A task management REST API built with ASP.NET Core Web API (.NET 9). TaskFlow lets teams organize work through projects, tasks, and assignments. Users can create projects, break them into tasks, assign teammates, set deadlines, and track progress through a straightforward REST API.
 
 This is an ongoing build. Some features are already working, others are still being added.
 
@@ -18,11 +18,11 @@ This is an ongoing build. Some features are already working, others are still be
 - Password hashing with BCrypt
 - Real registration and login logic hitting the database
 - JWT token generation on login
+- Projects CRUD with soft delete and JWT-protected routes
 
 ### 🚧 In Progress
 - OAuth 2.0 — Google and GitHub login
 - API Key authentication
-- Projects CRUD
 - Tasks CRUD with filtering and pagination
 - Comments on tasks
 - Global error handling middleware
@@ -48,9 +48,10 @@ This is an ongoing build. Some features are already working, others are still be
 | Caching | Redis *(planned)* |
 | Background Jobs | Hangfire *(planned)* |
 | Logging | Serilog *(planned)* |
-| Validation | FluentValidation |
-| Object Mapping | AutoMapper |
-| Password Hashing | BCrypt.Net *(done)* |
+| Validation | FluentValidation *(planned)* |
+| Object Mapping | AutoMapper *(planned)* |
+| Password Hashing | BCrypt.Net ✅ |
+| JWT Authentication | Microsoft.AspNetCore.Authentication.JwtBearer ✅ |
 | Containerization | Docker *(planned)* |
 | CI/CD | GitHub Actions *(planned)* |
 
@@ -75,7 +76,7 @@ TaskFlow.API/
 ```
 Controller → Service → Repository → DbContext
 ```
-Each layer only talks to the layer directly below it e.g controllers will never touch the database directly.
+Each layer only talks to the layer directly below it (e.g controllers never touch the database directly).
 
 ---
 
@@ -125,7 +126,7 @@ dotnet user-secrets init
 dotnet user-secrets set "ConnectionStrings:DefaultConnection" "Host=localhost;Port=5432;Database=yourdb;Username=yourusername;Password=yourpassword"
 ```
 
-**3. Set your JWT user secret**
+**3. Set your JWT secret**
 ```bash
 dotnet user-secrets set "Jwt:Secret" "your-secret-key"
 ```
@@ -157,6 +158,11 @@ dotnet ef database update
 dotnet run
 ```
 
+For development with auto-restart on file changes:
+```bash
+dotnet watch run
+```
+
 ---
 
 ## API Endpoints
@@ -168,30 +174,30 @@ dotnet run
 | POST | `/api/auth/login` | ✅ Working |
 | POST | `/api/auth/google` | 🚧 In Progress |
 
-### Projects 🚧
+### Projects ✅
 | Method | Endpoint | Status |
 |---|---|---|
-| GET | `/api/v1/projects` | 🚧 In Progress |
-| GET | `/api/v1/projects/{id}` | 🚧 In Progress |
-| POST | `/api/v1/projects` | 🚧 In Progress |
-| PUT | `/api/v1/projects/{id}` | 🚧 In Progress |
-| DELETE | `/api/v1/projects/{id}` | 🚧 In Progress |
+| GET | `/api/project` | ✅ Working |
+| GET | `/api/project/{id}` | ✅ Working |
+| POST | `/api/project` | ✅ Working |
+| PUT | `/api/project/{id}` | ✅ Working |
+| DELETE | `/api/project/{id}` | ✅ Working |
 
 ### Tasks 🚧
 | Method | Endpoint | Status |
 |---|---|---|
-| GET | `/api/v1/projects/{id}/tasks` | 🚧 In Progress |
-| GET | `/api/v1/tasks/{id}` | 🚧 In Progress |
-| POST | `/api/v1/projects/{id}/tasks` | 🚧 In Progress |
-| PUT | `/api/v1/tasks/{id}` | 🚧 In Progress |
-| DELETE | `/api/v1/tasks/{id}` | 🚧 In Progress |
+| GET | `/api/projects/{id}/tasks` | 🚧 In Progress |
+| GET | `/api/tasks/{id}` | 🚧 In Progress |
+| POST | `/api/projects/{id}/tasks` | 🚧 In Progress |
+| PUT | `/api/tasks/{id}` | 🚧 In Progress |
+| DELETE | `/api/tasks/{id}` | 🚧 In Progress |
 
 ### Comments 🚧
 | Method | Endpoint | Status |
 |---|---|---|
-| GET | `/api/v1/tasks/{id}/comments` | 🚧 In Progress |
-| POST | `/api/v1/tasks/{id}/comments` | 🚧 In Progress |
-| DELETE | `/api/v1/comments/{id}` | 🚧 In Progress |
+| GET | `/api/tasks/{id}/comments` | 🚧 In Progress |
+| POST | `/api/tasks/{id}/comments` | 🚧 In Progress |
+| DELETE | `/api/comments/{id}` | 🚧 In Progress |
 
 ### System 🚧
 | Method | Endpoint | Status |
@@ -212,6 +218,13 @@ git checkout -b feature/your-feature-name
 git commit -m "feat: add your feature"
 ```
 4. Push and open a Pull Request
+
+---
+ 
+## Related
+ 
+**TaskFlow Client** — Frontend for this API
+> Not yet available — currently in planning. Coming soon at [github.com/GitJerson/TaskFlow-Client](https://github.com/GitJerson/TaskFlow-Client)
 
 ---
 

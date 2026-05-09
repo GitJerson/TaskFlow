@@ -10,14 +10,17 @@ namespace Services
 {
     public class JwtService : IJwtService
     {
+        //Repository
         private readonly IOptions<JwtConfig> _options;
 
+        //Constructor & dependecy injection
         public JwtService(IOptions<JwtConfig> options)
         {
             _options = options;
         }
 
 
+        //generates a token
         public string GenerateJwtToken(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();

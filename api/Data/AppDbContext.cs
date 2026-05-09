@@ -5,6 +5,7 @@ namespace Data
     using System.Linq;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
+    using Models;
 
     public class AppDbContext : DbContext
     {
@@ -12,6 +13,9 @@ namespace Data
         {
         }
 
-        public DbSet<Models.User> Users { get; set; }
+        public DbSet<User> Users { get; set; }
+
+        public DbSet<Project> Projects { get; set; }
+
     }
 }

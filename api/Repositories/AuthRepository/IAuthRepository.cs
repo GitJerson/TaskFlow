@@ -4,7 +4,8 @@ namespace Repositories
 {
     public interface IAuthRepository
     {
-        Task SaveUser(User user);
+        //Contracts
+        Task AddUser(User user);
         Task<User?> FindUser(string? email);
 
     }

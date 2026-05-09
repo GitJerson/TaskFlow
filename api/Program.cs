@@ -31,14 +31,18 @@ builder.Services.AddAuthentication()
 });
 //Repositories
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 
 //Custom services
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
+builder.Services.AddScoped<IProjectService, ProjectService>();
 
 //-------------------//
 builder.Services.AddOpenApi();
 builder.Services.AddControllers();
+
+//Database connection
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
