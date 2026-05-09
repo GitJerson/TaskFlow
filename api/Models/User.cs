@@ -1,9 +1,6 @@
 namespace Models
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
 
     public class User
     {
@@ -14,5 +11,7 @@ namespace Models
         public string? Role { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
+
+        public virtual ICollection<Project> Projects { get; set; } = new List<Project>();
     }
 }
