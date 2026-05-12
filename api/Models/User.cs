@@ -14,5 +14,6 @@ namespace Models
 
         public virtual ICollection<Project> Projects { get; set; } = new List<Project>();
         public virtual ICollection<ProjectTask> AssignedTasks { get; set; } = new List<ProjectTask>();
+        public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
     }
 }

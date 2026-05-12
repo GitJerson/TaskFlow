@@ -20,11 +20,11 @@ This is an ongoing build. Some features are already working, others are still be
 - JWT token generation on login
 - Projects CRUD with soft delete and JWT-protected routes
 - Tasks CRUD with priority, assignment, soft delete, and nested routing
+- Comments CRUD with soft delete, nested routing, and user attribution
 
 ### 🚧 In Progress
 - OAuth 2.0 — Google and GitHub login
 - API Key authentication
-- Comments on tasks
 - Global error handling middleware
 - Request logging with Serilog
 - Rate limiting
@@ -192,12 +192,14 @@ dotnet watch run
 | PUT | `/api/tasks/{taskId}` | ✅ Working |
 | DELETE | `/api/tasks/{taskId}` | ✅ Working |
 
-### Comments 🚧
+### Comments ✅
 | Method | Endpoint | Status |
 |---|---|---|
-| GET | `/api/tasks/{id}/comments` | 🚧 In Progress |
-| POST | `/api/tasks/{id}/comments` | 🚧 In Progress |
-| DELETE | `/api/comments/{id}` | 🚧 In Progress |
+| GET | `/api/tasks/{id}/comments` | ✅ Working |
+| POST | `/api/tasks/{id}/comments` | ✅ Working |
+| GET | `/api/comment/{id}` | ✅ Working |
+| PUT | `/api/comment/{id}` | ✅ Working |
+| DELETE | `/api/comment/{id}` | ✅ Working |
 
 ### System 🚧
 | Method | Endpoint | Status |

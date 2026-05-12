@@ -17,6 +17,6 @@ namespace Models
         public Guid? AssignedUserId { get; set; }
         public virtual User? AssignedUser { get; set; }
         public Priority Priority { get; set; }
-
+        public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
     }
 }
