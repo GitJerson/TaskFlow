@@ -19,11 +19,11 @@ This is an ongoing build. Some features are already working, others are still be
 - Real registration and login logic hitting the database
 - JWT token generation on login
 - Projects CRUD with soft delete and JWT-protected routes
+- Tasks CRUD with priority, assignment, soft delete, and nested routing
 
 ### 🚧 In Progress
 - OAuth 2.0 — Google and GitHub login
 - API Key authentication
-- Tasks CRUD with filtering and pagination
 - Comments on tasks
 - Global error handling middleware
 - Request logging with Serilog
@@ -183,14 +183,14 @@ dotnet watch run
 | PUT | `/api/project/{id}` | ✅ Working |
 | DELETE | `/api/project/{id}` | ✅ Working |
 
-### Tasks 🚧
+### Tasks ✅
 | Method | Endpoint | Status |
 |---|---|---|
-| GET | `/api/projects/{id}/tasks` | 🚧 In Progress |
-| GET | `/api/tasks/{id}` | 🚧 In Progress |
-| POST | `/api/projects/{id}/tasks` | 🚧 In Progress |
-| PUT | `/api/tasks/{id}` | 🚧 In Progress |
-| DELETE | `/api/tasks/{id}` | 🚧 In Progress |
+| GET | `/api/project/{projectId}/tasks` | ✅ Working |
+| GET | `/api/tasks/{taskId}` | ✅ Working |
+| POST | `/api/project/{projectId}/tasks` | ✅ Working |
+| PUT | `/api/tasks/{taskId}` | ✅ Working |
+| DELETE | `/api/tasks/{taskId}` | ✅ Working |
 
 ### Comments 🚧
 | Method | Endpoint | Status |
@@ -220,9 +220,9 @@ git commit -m "feat: add your feature"
 4. Push and open a Pull Request
 
 ---
- 
+
 ## Related
- 
+
 **TaskFlow Client** — Frontend for this API
 > Not yet available — currently in planning. Coming soon at [github.com/GitJerson/TaskFlow-Client](https://github.com/GitJerson/TaskFlow-Client)
 
