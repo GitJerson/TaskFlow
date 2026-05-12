@@ -45,7 +45,7 @@ namespace Services
             
             project.IsActive = false;
 
-            await _projectRepository.DeleteProject(project);
+            await _projectRepository.UpdateProject(project);
 
             return "Project deleted successfully";
         }
@@ -68,32 +68,23 @@ namespace Services
             };
             
             return projects;
-
         }
 
         public async Task<ICollection<ProjectResponseDto>> GetProjectsAsync()
         {
-            var project = await _projectRepository.GetProjects();
-            var projects = new List<ProjectResponseDto>();
+            var projects = await _projectRepository.GetProjects();
 
-            foreach(var item in project)
+            var projectDtos = projects.Select(p => new ProjectResponseDto
             {
-                if(item.IsActive)
-                {
-                    var eachProject = new ProjectResponseDto()
-                    {
-                        Id = item.Id,
-                        Title = item.Title,
-                        Description = item.Description,
-                        CreatedAt = item.CreatedAt,
-                        IsActive = item.IsActive,
-                        OwnerName = item?.User?.Name
-                    };
-                    projects.Add(eachProject);
-                }
-            }
+                Id = p.Id,
+                Title = p.Title,
+                Description = p.Description,
+                CreatedAt = p.CreatedAt,
+                IsActive = p.IsActive,
+                OwnerName = p?.User?.Name
+            }).ToList();
 
-            return projects;
+            return projectDtos;
         }
 
         public async Task<string> UpdateProjectAsync(Guid id, UpdateProjectDto request)
