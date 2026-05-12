@@ -34,13 +34,6 @@ namespace Repositories
             _dbContext.Update(project);
             await _dbContext.SaveChangesAsync();
         }
-
-        public async Task DeleteProject(Project project)
-        {
-            _dbContext.Update(project);
-            await _dbContext.SaveChangesAsync();
-        }
-
         public async Task<ICollection<Project>> GetProjects()
         {
             var projects = await _dbContext.Projects

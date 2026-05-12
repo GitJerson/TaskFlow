@@ -8,6 +8,7 @@ namespace Controllers
     using System.Security.Claims;
     using Dtos;
     using Models;
+    using Microsoft.AspNetCore.Identity.UI.Services;
 
     [Route("api/Project")]
     [ApiController]
@@ -61,15 +62,20 @@ namespace Controllers
         public async Task<IActionResult> UpdateProject([FromRoute] Guid id, [FromBody] UpdateProjectDto request)
         {
             var project = await _projectService.UpdateProjectAsync(id, request);
-            return Ok(project);
+
+            if(project == "Project not found")
+                return NotFound();
+
+            return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProject([FromRoute] Guid id)
         {
-
             var project = await _projectService.DeleteProjectAsync(id);
-            return Ok(project);
+            if(project == "Project not found")
+                return NotFound();
+            return NoContent();
         }
 
     }

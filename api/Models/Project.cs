@@ -13,6 +13,7 @@ namespace Models
 
         public virtual User? User { get; set; }
 
+        public virtual ICollection<ProjectTask> Tasks { get; set; } = new List<ProjectTask>();
 
 
     }

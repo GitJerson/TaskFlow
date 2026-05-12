@@ -13,5 +13,6 @@ namespace Models
         public DateTime? UpdatedAt { get; set; }
 
         public virtual ICollection<Project> Projects { get; set; } = new List<Project>();
+        public virtual ICollection<ProjectTask> AssignedTasks { get; set; } = new List<ProjectTask>();
     }
 }
