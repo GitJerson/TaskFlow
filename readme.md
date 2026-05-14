@@ -13,7 +13,7 @@ This is an ongoing build. Some features are already working, others are still be
 - PostgreSQL connection via dotnet user-secrets
 - Entity Framework Core with AppDbContext
 - User model and initial database migration
-- Auth endpoints — `POST /api/auth/register` and `POST /api/auth/login`
+- Auth endpoints — `POST /api/v1/auth/register` and `POST /api/v1/auth/login`
 - Service and Repository pattern wired up with proper DI
 - Password hashing with BCrypt
 - Real registration and login logic hitting the database
@@ -24,11 +24,11 @@ This is an ongoing build. Some features are already working, others are still be
 - Global error handling middleware — clean JSON error responses
 - Request logging with Serilog — console and file output
 - Rate limiting — fixed window, 100 requests per minute per IP, returns 429
+- API versioning — URL segment versioning, all endpoints under `/api/v1/`
 
 ### 🚧 In Progress
 - OAuth 2.0 — Google and GitHub login
 - API Key authentication
-- API versioning (`/api/v1/...`)
 - Redis caching
 - Background jobs with Hangfire — due date email reminders
 - Health check endpoint (`/health`)
@@ -53,6 +53,7 @@ This is an ongoing build. Some features are already working, others are still be
 | Password Hashing | BCrypt.Net ✅ |
 | JWT Authentication | Microsoft.AspNetCore.Authentication.JwtBearer ✅ |
 | Rate Limiting | ASP.NET Core built-in Rate Limiter ✅ |
+| API Versioning | Asp.Versioning.Mvc ✅ |
 | Containerization | Docker *(planned)* |
 | CI/CD | GitHub Actions *(planned)* |
 
@@ -62,7 +63,8 @@ This is an ongoing build. Some features are already working, others are still be
 
 ```
 TaskFlow.API/
-├── Controllers/        # HTTP request/response handlers
+├── Controllers/
+│   └── V1/             # Version 1 controllers
 ├── Services/           # Business logic
 ├── Repositories/       # Data access layer
 ├── Models/             # Database entities
@@ -171,36 +173,36 @@ dotnet watch run
 ### Auth ✅
 | Method | Endpoint | Status |
 |---|---|---|
-| POST | `/api/auth/register` | ✅ Working |
-| POST | `/api/auth/login` | ✅ Working |
-| POST | `/api/auth/google` | 🚧 In Progress |
+| POST | `/api/v1/auth/register` | ✅ Working |
+| POST | `/api/v1/auth/login` | ✅ Working |
+| POST | `/api/v1/auth/google` | 🚧 In Progress |
 
 ### Projects ✅
 | Method | Endpoint | Status |
 |---|---|---|
-| GET | `/api/project` | ✅ Working |
-| GET | `/api/project/{id}` | ✅ Working |
-| POST | `/api/project` | ✅ Working |
-| PUT | `/api/project/{id}` | ✅ Working |
-| DELETE | `/api/project/{id}` | ✅ Working |
+| GET | `/api/v1/project` | ✅ Working |
+| GET | `/api/v1/project/{id}` | ✅ Working |
+| POST | `/api/v1/project` | ✅ Working |
+| PUT | `/api/v1/project/{id}` | ✅ Working |
+| DELETE | `/api/v1/project/{id}` | ✅ Working |
 
 ### Tasks ✅
 | Method | Endpoint | Status |
 |---|---|---|
-| GET | `/api/project/{projectId}/tasks` | ✅ Working |
-| GET | `/api/tasks/{taskId}` | ✅ Working |
-| POST | `/api/project/{projectId}/tasks` | ✅ Working |
-| PUT | `/api/tasks/{taskId}` | ✅ Working |
-| DELETE | `/api/tasks/{taskId}` | ✅ Working |
+| GET | `/api/v1/project/{projectId}/tasks` | ✅ Working |
+| GET | `/api/v1/tasks/{taskId}` | ✅ Working |
+| POST | `/api/v1/project/{projectId}/tasks` | ✅ Working |
+| PUT | `/api/v1/tasks/{taskId}` | ✅ Working |
+| DELETE | `/api/v1/tasks/{taskId}` | ✅ Working |
 
 ### Comments ✅
 | Method | Endpoint | Status |
 |---|---|---|
-| GET | `/api/tasks/{id}/comments` | ✅ Working |
-| POST | `/api/tasks/{id}/comments` | ✅ Working |
-| GET | `/api/comment/{id}` | ✅ Working |
-| PUT | `/api/comment/{id}` | ✅ Working |
-| DELETE | `/api/comment/{id}` | ✅ Working |
+| GET | `/api/v1/tasks/{id}/comments` | ✅ Working |
+| POST | `/api/v1/tasks/{id}/comments` | ✅ Working |
+| GET | `/api/v1/comment/{id}` | ✅ Working |
+| PUT | `/api/v1/comment/{id}` | ✅ Working |
+| DELETE | `/api/v1/comment/{id}` | ✅ Working |
 
 ### System 🚧
 | Method | Endpoint | Status |

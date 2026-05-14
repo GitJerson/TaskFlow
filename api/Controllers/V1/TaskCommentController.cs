@@ -3,11 +3,12 @@ using Services;
 using DTOs;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
-
+using Asp.Versioning;
 namespace Controllers
 {
+    [ApiVersion("1.0")]
     [ApiController]
-    [Route("api/Tasks/{id}/comments")]
+    [Route("api/v{version:apiVersion}/Tasks/{id}/comments")]
     [Authorize]
     public class TaskCommentController : ControllerBase
     {

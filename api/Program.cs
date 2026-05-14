@@ -8,6 +8,7 @@ using Repositories;
 using Services;
 using Serilog;
 using System.Threading.RateLimiting;
+using Asp.Versioning;
 
 
 //start builder
@@ -40,6 +41,14 @@ builder.Services.AddRateLimiter(options =>
 
 //Build serilog
 builder.Host.UseSerilog();
+
+//Build api versioning
+builder.Services.AddApiVersioning(options =>
+{
+    options.DefaultApiVersion = new ApiVersion(1, 0);
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.ReportApiVersions = true;
+}).AddApiExplorer();
 
 //Variable
 var jwtConfig = builder.Configuration.GetSection("Jwt").Get<JwtConfig>()!;
