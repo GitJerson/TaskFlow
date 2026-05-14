@@ -6,12 +6,43 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Repositories;
 using Services;
+using Serilog;
+using System.Threading.RateLimiting;
 
+
+//start builder
 var builder = WebApplication.CreateBuilder(args);
-var jwtConfig = builder.Configuration.GetSection("Jwt").Get<JwtConfig>()!;
+
+//Serilog configuration
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .WriteTo.File("logs/taskflow.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+
 
 //1. Build Services
 
+//Rate limiter
+builder.Services.AddRateLimiter(options =>
+{
+  options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(httpContext =>
+    RateLimitPartition.GetFixedWindowLimiter(
+      partitionKey: httpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+      factory: partition => new FixedWindowRateLimiterOptions
+      {
+        PermitLimit = 100,
+        Window = TimeSpan.FromMinutes(1),
+        QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+        QueueLimit = 0,
+      }));
+      options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+});
+
+//Build serilog
+builder.Host.UseSerilog();
+
+//Variable
+var jwtConfig = builder.Configuration.GetSection("Jwt").Get<JwtConfig>()!;
 //Jwt 
 builder.Services.Configure<JwtConfig>(builder.Configuration.GetSection("Jwt"));
 builder.Services.AddAuthentication()
@@ -54,9 +85,12 @@ var app = builder.Build();
 
 
 //3. Middleware Pipelines
+app.UseMiddleware<Middleware.ErrorHandlingMiddleware>();
+app.UseSerilogRequestLogging();
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseRateLimiter();
 app.MapControllers();
 
 
