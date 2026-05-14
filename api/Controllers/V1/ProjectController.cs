@@ -6,11 +6,11 @@ namespace Controllers
     using Services;
     using Microsoft.AspNetCore.Authorization;
     using System.Security.Claims;
+    using Asp.Versioning;
     using Dtos;
-    using Models;
-    using Microsoft.AspNetCore.Identity.UI.Services;
 
-    [Route("api/Project")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     [Authorize]
     public class ProjectController : ControllerBase

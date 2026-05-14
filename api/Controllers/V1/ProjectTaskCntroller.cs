@@ -2,10 +2,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services;
 using Dtos;
+using Asp.Versioning;
 namespace Controllers
 {
+    [ApiVersion("1.0")]
     [ApiController]
-    [Route("api/Project/{projectId}/tasks")]
+    [Route("api/v{version:apiVersion}/Project/{projectId}/tasks")]
     [Authorize]
     public class ProjectTaskController : ControllerBase
     {

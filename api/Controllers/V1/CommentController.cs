@@ -2,10 +2,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services;
 using DTOs;
+using Asp.Versioning;
 namespace Controllers
 {
+    [ApiVersion("1.0")]
     [ApiController]
-    [Route("api/Comment")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [Authorize]
     public class CommentController : ControllerBase
     {
