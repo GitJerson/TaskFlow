@@ -50,6 +50,12 @@ builder.Services.AddApiVersioning(options =>
     options.ReportApiVersions = true;
 }).AddApiExplorer();
 
+//Redis caching
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetConnectionString("Redis");
+});
+
 //Variable
 var jwtConfig = builder.Configuration.GetSection("Jwt").Get<JwtConfig>()!;
 //Jwt 

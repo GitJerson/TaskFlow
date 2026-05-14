@@ -1,5 +1,7 @@
+using System.Text.Json;
 using Dtos;
 using DTOs;
+using Microsoft.Extensions.Caching.Distributed;
 using Models;
 using Repositories;
 
@@ -9,18 +11,20 @@ namespace Services
     {
         //Repository
         private readonly IProjectRepository _projectRepository;
+        private readonly IDistributedCache _cache;
 
         //Constructor & Dependency injection
-        public ProjectService(IProjectRepository projectRepository)
+        public ProjectService(IProjectRepository projectRepository, IDistributedCache cache)
         {
             _projectRepository = projectRepository;
+            _cache = cache;
         }
 
 
         //Methods
         public async Task<string> CreateProjectAsync(Guid userId, CreateProjectDto request)
         {
-            Project project = new Project()
+            var project = new Project()
             {
                 Id = Guid.NewGuid(),
                 Title = request.Title,
@@ -32,6 +36,9 @@ namespace Services
             };
 
             await _projectRepository.AddProject(project);
+
+            await _cache.RemoveAsync("projects");
+            Console.WriteLine("Cache removed: projects");
 
             return "Project created successfully";
         }
@@ -47,15 +54,25 @@ namespace Services
 
             await _projectRepository.UpdateProject(project);
 
+            await _cache.RemoveAsync($"project:{id}");
+            await _cache.RemoveAsync("projects");
+
             return "Project deleted successfully";
         }
 
         public async Task<ProjectResponseDto> GetProjectAsync(Guid id)
         {
+            var cachedProject = await _cache.GetStringAsync($"project:{id}");
+            if (cachedProject != null)
+            {
+                return JsonSerializer.Deserialize<ProjectResponseDto>(cachedProject)!;
+            }
+
             var project = await _projectRepository.FindProject(id);
 
             if(project == null)
                 return null!;
+
 
             ProjectResponseDto projects = new ProjectResponseDto()
             {
@@ -67,11 +84,24 @@ namespace Services
                 OwnerName = project?.User?.Name
             };
             
+            // Cache the result
+            var serializedProject = JsonSerializer.Serialize(projects);
+            await _cache.SetStringAsync($"project:{id}", serializedProject, new DistributedCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10)
+            });
+
             return projects;
         }
 
         public async Task<ICollection<ProjectResponseDto>> GetProjectsAsync()
         {
+            var cachedProjects = await _cache.GetStringAsync("projects");
+            if (cachedProjects != null)
+            {
+                return JsonSerializer.Deserialize<ICollection<ProjectResponseDto>>(cachedProjects)!;
+            }
+
             var projects = await _projectRepository.GetProjects();
 
             var projectDtos = projects.Select(p => new ProjectResponseDto
@@ -84,6 +114,13 @@ namespace Services
                 OwnerName = p?.User?.Name
             }).ToList();
 
+
+            // Cache the result
+            var serializedProjects = JsonSerializer.Serialize(projectDtos);
+            await _cache.SetStringAsync("projects", serializedProjects, new DistributedCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10)
+            });
             return projectDtos;
         }
 
@@ -99,6 +136,9 @@ namespace Services
             project.UpdatedAt = DateTime.UtcNow;
 
             await _projectRepository.UpdateProject(project);
+
+            await _cache.RemoveAsync("projects");
+            await _cache.RemoveAsync($"project:{id}");
 
             return "Project updated successfully";
         }
