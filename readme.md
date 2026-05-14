@@ -21,13 +21,13 @@ This is an ongoing build. Some features are already working, others are still be
 - Projects CRUD with soft delete and JWT-protected routes
 - Tasks CRUD with priority, assignment, soft delete, and nested routing
 - Comments CRUD with soft delete, nested routing, and user attribution
+- Global error handling middleware — clean JSON error responses
+- Request logging with Serilog — console and file output
+- Rate limiting — fixed window, 100 requests per minute per IP, returns 429
 
 ### 🚧 In Progress
 - OAuth 2.0 — Google and GitHub login
 - API Key authentication
-- Global error handling middleware
-- Request logging with Serilog
-- Rate limiting
 - API versioning (`/api/v1/...`)
 - Redis caching
 - Background jobs with Hangfire — due date email reminders
@@ -47,11 +47,12 @@ This is an ongoing build. Some features are already working, others are still be
 | ORM | Entity Framework Core |
 | Caching | Redis *(planned)* |
 | Background Jobs | Hangfire *(planned)* |
-| Logging | Serilog *(planned)* |
+| Logging | Serilog ✅ |
 | Validation | FluentValidation *(planned)* |
 | Object Mapping | AutoMapper *(planned)* |
 | Password Hashing | BCrypt.Net ✅ |
 | JWT Authentication | Microsoft.AspNetCore.Authentication.JwtBearer ✅ |
+| Rate Limiting | ASP.NET Core built-in Rate Limiter ✅ |
 | Containerization | Docker *(planned)* |
 | CI/CD | GitHub Actions *(planned)* |
 
