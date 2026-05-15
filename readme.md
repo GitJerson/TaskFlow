@@ -16,6 +16,7 @@ This is an ongoing build. Some features are already working, others are still be
 - Password hashing with BCrypt
 - Real registration and login logic hitting the database
 - JWT token generation on login
+- OAuth 2.0 with Google login
 - Projects CRUD with soft delete and JWT-protected routes
 - Tasks CRUD with priority, assignment, soft delete, and nested routing
 - Comments CRUD with soft delete, nested routing, and user attribution
@@ -26,7 +27,6 @@ This is an ongoing build. Some features are already working, others are still be
 - Redis caching on project endpoints with cache invalidation on create, update, and delete
 
 ### In Progress
-- OAuth 2.0 with Google and GitHub login
 - API Key authentication
 - Background jobs with Hangfire for due date email reminders
 - Health check endpoint at /health
@@ -48,6 +48,7 @@ This is an ongoing build. Some features are already working, others are still be
 | Object Mapping | AutoMapper (planned) |
 | Password Hashing | BCrypt.Net |
 | JWT Authentication | Microsoft.AspNetCore.Authentication.JwtBearer |
+| OAuth 2.0 | Microsoft.AspNetCore.Authentication.Google |
 | Rate Limiting | ASP.NET Core built-in Rate Limiter |
 | API Versioning | Asp.Versioning.Mvc |
 | Containerization | Docker (planned) |
@@ -128,6 +129,12 @@ dotnet user-secrets set "Jwt:Secret" "your-secret-key"
 dotnet user-secrets set "ConnectionStrings:Redis" "localhost:6379"
 ```
 
+**5. Set your Google OAuth credentials**
+```bash
+dotnet user-secrets set "Google:ClientId" "your-google-client-id"
+dotnet user-secrets set "Google:ClientSecret" "your-google-client-secret"
+```
+
 ### Start Redis
 
 ```bash
@@ -163,36 +170,37 @@ dotnet watch run
 ### Auth
 | Method | Endpoint | Status |
 |---|---|---|
-| POST | `/api/v1/auth/register` | Working ✅|
-| POST | `/api/v1/auth/login` | Working ✅ |
-| POST | `/api/v1/auth/google` | In Progress |
+| POST | `/api/v1/auth/register` | Working |
+| POST | `/api/v1/auth/login` | Working |
+| GET | `/api/v1/auth/google` | Working |
+| GET | `/api/v1/auth/google/callback` | Working |
 
 ### Projects
 | Method | Endpoint | Status |
 |---|---|---|
-| GET | `/api/v1/project` | Working ✅|
-| GET | `/api/v1/project/{id}` | Working ✅|
-| POST | `/api/v1/project` | Working ✅ |
-| PUT | `/api/v1/project/{id}` | Working ✅|
-| DELETE | `/api/v1/project/{id}` | Working ✅|
+| GET | `/api/v1/project` | Working |
+| GET | `/api/v1/project/{id}` | Working |
+| POST | `/api/v1/project` | Working |
+| PUT | `/api/v1/project/{id}` | Working |
+| DELETE | `/api/v1/project/{id}` | Working |
 
 ### Tasks
 | Method | Endpoint | Status |
 |---|---|---|
-| GET | `/api/v1/project/{projectId}/tasks` | Working ✅|
-| GET | `/api/v1/tasks/{taskId}` | Working ✅|
-| POST | `/api/v1/project/{projectId}/tasks` | Working ✅|
-| PUT | `/api/v1/tasks/{taskId}` | Working ✅|
-| DELETE | `/api/v1/tasks/{taskId}` | Working ✅|
+| GET | `/api/v1/project/{projectId}/tasks` | Working |
+| GET | `/api/v1/tasks/{taskId}` | Working |
+| POST | `/api/v1/project/{projectId}/tasks` | Working |
+| PUT | `/api/v1/tasks/{taskId}` | Working |
+| DELETE | `/api/v1/tasks/{taskId}` | Working |
 
 ### Comments
 | Method | Endpoint | Status |
 |---|---|---|
-| GET | `/api/v1/tasks/{id}/comments` | Working ✅|
-| POST | `/api/v1/tasks/{id}/comments` | Working ✅|
-| GET | `/api/v1/comment/{id}` | Working ✅|
-| PUT | `/api/v1/comment/{id}` | Working ✅|
-| DELETE | `/api/v1/comment/{id}` | Working ✅|
+| GET | `/api/v1/tasks/{id}/comments` | Working |
+| POST | `/api/v1/tasks/{id}/comments` | Working |
+| GET | `/api/v1/comment/{id}` | Working |
+| PUT | `/api/v1/comment/{id}` | Working |
+| DELETE | `/api/v1/comment/{id}` | Working |
 
 ### System
 | Method | Endpoint | Status |

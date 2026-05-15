@@ -38,7 +38,6 @@ namespace Services
             await _projectRepository.AddProject(project);
 
             await _cache.RemoveAsync("projects");
-            Console.WriteLine("Cache removed: projects");
 
             return "Project created successfully";
         }

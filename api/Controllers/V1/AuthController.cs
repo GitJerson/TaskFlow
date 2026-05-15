@@ -9,6 +9,9 @@ namespace Controllers
     using Services;
     using Microsoft.AspNetCore.Authorization;
     using Asp.Versioning;
+    using Microsoft.AspNetCore.Authentication;
+    using Microsoft.AspNetCore.Authentication.Google;
+    using System.Security.Claims;
 
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
@@ -44,6 +47,34 @@ namespace Controllers
                 return Conflict();
 
             return Ok(message);
+        }
+
+        [HttpGet("google")]
+        public IActionResult GoogleLogin()
+        {
+           var redirectUrl = Url.Action("GoogleCallback", "Auth");
+           var properties = new AuthenticationProperties { RedirectUri = redirectUrl };
+           
+           return Challenge(properties, GoogleDefaults.AuthenticationScheme);
+        }
+
+        [HttpGet("google/callback")]
+        public async Task<IActionResult> GoogleCallback()
+        {
+            var result = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
+
+            if (!result.Succeeded)
+                return BadRequest();
+
+            var email = result.Principal.FindFirst(ClaimTypes.Email)?.Value;
+            var name = result.Principal.FindFirst(ClaimTypes.Name)?.Value;
+
+            var token = await _authService.GoogleLoginAsync(email!, name!);
+
+            if(token == null)
+                return Unauthorized();
+
+            return Ok(token);
         }
     }
 
