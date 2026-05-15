@@ -21,6 +21,31 @@ namespace Services
         }
 
         //Methods
+        public async Task<string> GoogleLoginAsync(string email, string name)
+        {
+            var user = await _authRepository.FindUser(email);
+
+            if(user != null)
+            {
+                var token = _jwtService.GenerateJwtToken(user);
+                return token;
+            }
+
+            User newUser = new User()
+            {
+                Id = Guid.NewGuid(),
+                Name = name,
+                Email = email,
+                PasswordHash = string.Empty,
+                Role = "User",
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
+            };
+            await _authRepository.AddUser(newUser);
+            var nToken = _jwtService.GenerateJwtToken(newUser);
+            return nToken;
+        }
+
         public async Task<string> LoginAsync(LoginRequest request)
         {
             var user = await _authRepository.FindUser(request.Email);

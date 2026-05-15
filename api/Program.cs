@@ -9,6 +9,8 @@ using Services;
 using Serilog;
 using System.Threading.RateLimiting;
 using Asp.Versioning;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 
 //start builder
@@ -56,24 +58,38 @@ builder.Services.AddStackExchangeRedisCache(options =>
     options.Configuration = builder.Configuration.GetConnectionString("Redis");
 });
 
+
 //Variable
 var jwtConfig = builder.Configuration.GetSection("Jwt").Get<JwtConfig>()!;
 //Jwt 
 builder.Services.Configure<JwtConfig>(builder.Configuration.GetSection("Jwt"));
-builder.Services.AddAuthentication()
-.AddJwtBearer(value =>{
+
+//Gooogle auth (OAuth2)
+builder.Services.AddAuthentication(options =>
+{
+  options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+  options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+  options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+})
+.AddCookie()
+.AddJwtBearer(value => {
     value.TokenValidationParameters = new TokenValidationParameters
     {
-      ValidateIssuer = true,
-      ValidateAudience = true,
-      ValidateLifetime = true,
-      ValidateIssuerSigningKey = true,
-      ValidIssuer = jwtConfig.Issuer,
-      ValidAudience = jwtConfig.Audience,
-      IssuerSigningKey = new SymmetricSecurityKey(
-        Encoding.UTF8.GetBytes(jwtConfig.Secret!)
-      )
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = jwtConfig.Issuer,
+        ValidAudience = jwtConfig.Audience,
+        IssuerSigningKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(jwtConfig.Secret!)
+        )
     };
+  })
+.AddGoogle(options =>
+{
+    options.ClientId = builder.Configuration["Google:ClientId"]!;
+    options.ClientSecret = builder.Configuration["Google:ClientSecret"]!;
 });
 //Repositories
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();

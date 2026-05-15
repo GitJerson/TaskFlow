@@ -10,5 +10,6 @@ namespace Services
     {
         Task<string> RegisterAsync(RegisterRequest request);
         Task<string>  LoginAsync(LoginRequest request);
+        Task<string> GoogleLoginAsync(string email, string name);
     }
 }
