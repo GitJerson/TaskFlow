@@ -17,6 +17,7 @@ This is an ongoing build. Some features are already working, others are still be
 - Real registration and login logic hitting the database
 - JWT token generation on login
 - OAuth 2.0 with Google login
+- API Key authentication with BCrypt hashing, one-time key reveal, and revocation support
 - Projects CRUD with soft delete and JWT-protected routes
 - Tasks CRUD with priority, assignment, soft delete, and nested routing
 - Comments CRUD with soft delete, nested routing, and user attribution
@@ -27,7 +28,6 @@ This is an ongoing build. Some features are already working, others are still be
 - Redis caching on project endpoints with cache invalidation on create, update, and delete
 
 ### In Progress
-- API Key authentication
 - Background jobs with Hangfire for due date email reminders
 - Health check endpoint at /health
 - Docker and Docker Compose setup
@@ -49,6 +49,7 @@ This is an ongoing build. Some features are already working, others are still be
 | Password Hashing | BCrypt.Net |
 | JWT Authentication | Microsoft.AspNetCore.Authentication.JwtBearer |
 | OAuth 2.0 | Microsoft.AspNetCore.Authentication.Google |
+| API Keys | Custom attribute-based authentication |
 | Rate Limiting | ASP.NET Core built-in Rate Limiter |
 | API Versioning | Asp.Versioning.Mvc |
 | Containerization | Docker (planned) |
@@ -201,6 +202,14 @@ dotnet watch run
 | GET | `/api/v1/comment/{id}` | Working |
 | PUT | `/api/v1/comment/{id}` | Working |
 | DELETE | `/api/v1/comment/{id}` | Working |
+
+### API Keys
+| Method | Endpoint | Status |
+|---|---|---|
+| GET | `/api/v1/apikeys` | Working |
+| POST | `/api/v1/apikeys` | Working |
+| PUT | `/api/v1/apikeys/{keyId}` | Working |
+| DELETE | `/api/v1/apikeys/{keyId}` | Working |
 
 ### System
 | Method | Endpoint | Status |
